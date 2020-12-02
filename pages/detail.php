@@ -2,24 +2,29 @@
     $dsn = "mysql:host=localhost;dbname=restaurantdb;charset=utf8";
     $user = "restaurantdb_admin";
     $password = "admin123";
-    $id = $_GET["id"];
-    // データベース接続オブジェクトを取得
-    $pdo = new PDO($dsn, $user, $password);
-    // 実行するSQLを設定
-    $sql = "select * from restaurants where id = ?";
-    $sqlRv = "select * from reviews where restaurant_id = ?";
-    // SQL実行オブジェクトを取得
-    $pstmt = $pdo->prepare($sql);
-    $pstmtRv = $pdo->prepare($sqlRv);
-    // プレースホルダにリクエストパラメータを設定
-    $pstmt->bindValue(1, $id);
-    $pstmtRv->bindValue(1, $id);
-    // SQLを実行
-    $pstmt->execute();
-    $pstmtRv->execute();
-    // SQL実行結果を配列に取得
-    $records = $pstmt->fetchAll(PDO::FETCH_ASSOC);
-    $recordsRv = $pstmtRv->fetchAll(PDO::FETCH_ASSOC);
+    isset($_GET["id"]) ? $id = $_GET["id"] : $id = "";
+    
+    try {
+    	$pdo = new PDO($dsn, $user, $password);
+        // 実行するSQLを設定
+        $sql = "select * from restaurants where id = ?";
+        $sqlRv = "select * from reviews where restaurant_id = ?";
+        // SQL実行オブジェクトを取得
+        $pstmt = $pdo->prepare($sql);
+        $pstmtRv = $pdo->prepare($sqlRv);
+        // プレースホルダにリクエストパラメータを設定
+        $pstmt->bindValue(1, $id);
+        $pstmtRv->bindValue(1, $id);
+        // SQLを実行
+        $pstmt->execute();
+        $pstmtRv->execute();
+        // SQL実行結果を配列に取得
+        $records = $pstmt->fetchAll(PDO::FETCH_ASSOC);
+        $recordsRv = $pstmtRv->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) { 
+    	echo $e->getMessage();
+    } 
+
     var_dump($id);
     var_dump($records);
     var_dump($recordsRv);
