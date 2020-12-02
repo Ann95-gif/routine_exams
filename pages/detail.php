@@ -2,6 +2,7 @@
     $dsn = "mysql:host=localhost;dbname=restaurantdb;charset=utf8";
     $user = "restaurantdb_admin";
     $password = "admin123";
+    
     isset($_GET["id"]) ? $id = $_GET["id"] : $id = "";
     
     try {
@@ -24,11 +25,11 @@
     } catch (PDOException $e) { 
     	echo $e->getMessage();
     } 
-
     var_dump($id);
     var_dump($records);
     var_dump($recordsRv);
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
